@@ -7,7 +7,7 @@ services:
 
     build: 
       context: ..
-      dockerfile: .devcontainer/dockerfile
+      dockerfile: dockerfile
 
     volumes:
       - ..:/workspace
