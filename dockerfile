@@ -23,4 +23,4 @@ RUN apt-get -y install nodejs
 
 RUN mkdir /app
 WORKDIR /app
-COPY ../recipe /app
+COPY . /app
