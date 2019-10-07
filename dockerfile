@@ -6,7 +6,7 @@ ARG USERNAME=vscode
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
-COPY django-rest-API-recipe-project/recipe/requirements.txt .devcontainer/noop.txt /tmp/pip-tmp/
+COPY recipe/requirements.txt .devcontainer/noop.txt /tmp/pip-tmp/
 
 RUN apt-get update \
     && apt-get -y install --no-install-recommends apt-utils dialog 2>&1 \
