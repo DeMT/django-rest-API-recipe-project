@@ -7,15 +7,15 @@ services:
 
     build: 
       context: .
-      dockerfile: dockerfile
 
     volumes:
-      - ..:/workspace
+      - ./recipe:/workspace
     ports:
       - "8000:8000"
       - "3000:3000"
       - "5500:5500"
     # Overrides default command so things don't shut down after the process ends.
-    command: sleep infinity
+    command: >
+     sh -c "python manage.py runserver 0.0.0.0:8000"
     
 

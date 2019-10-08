@@ -1,23 +1,10 @@
-FROM continuumio/anaconda3
+FROM python:3.7-alpine
 
 ENV PYTHONUNBUFFERED 1
 
 
-COPY recipe/requirements.txt .devcontainer/noop.txt /tmp/pip-tmp/
-
-RUN apt-get update \
-    && apt-get -y install --no-install-recommends apt-utils dialog 2>&1 \
-    && apt-get -y install git procps lsb-release \
-    && apt-get install python-pip\
-     && pip install pylint \
-    && if [ -f "/tmp/pip-tmp/requirements.txt" ]; then pip install -r /tmp/pip-tmp/requirements.txt; fi \
-    && rm -rf /tmp/pip-tmp \
-    && apt-get autoremove -y \
-    && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/*   
-
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
-RUN apt-get -y install nodejs
+COPY ./requirements.txt /requirements.txt
+RUN pip install -r /requirements.txt
 
 RUN mkdir /app
 WORKDIR /app
