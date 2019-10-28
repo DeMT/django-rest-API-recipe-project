@@ -28,3 +28,4 @@ class UserAdmin(BaseUserAdmin):
             'fields': ('email', 'password', 'password2')
         }),
     )
+    search_fields = ('email',)
