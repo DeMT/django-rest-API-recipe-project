@@ -11,7 +11,7 @@
             "program": "${workspaceFolder}/recipe/manage.py",
             "args": [
                 "test",
-                "app",         
+                "user",         
                 
             ],
             "django": true
