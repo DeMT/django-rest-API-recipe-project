@@ -1,7 +1,6 @@
 {
     "python.pythonPath": "/opt/conda/bin/python",
     "code-runner.saveAllFilesBeforeRun": true,
-    
     "code-runner.executorMap": {
         "python": "python  ./recipe/manage.py test",
     },
@@ -17,5 +16,11 @@
         "./recipe",
         "-p",
         "test*.py"
+    ],
+    "python.dataScience.sendSelectionToInteractiveWindow": true,
+    "terminal.integrated.fontFamily": "monospace",
+    "python.linting.pylintEnabled": true,
+    "python.linting.pylintArgs": [
+        "--load-plugins=pylint_django"
     ],
 }

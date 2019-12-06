@@ -29,3 +29,6 @@ class UserAdmin(BaseUserAdmin):
         }),
     )
     search_fields = ('email',)
+
+
+admin.register(models.Tag)
