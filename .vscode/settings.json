@@ -18,9 +18,9 @@
         "test*.py"
     ],
     "python.dataScience.sendSelectionToInteractiveWindow": true,
-    "terminal.integrated.fontFamily": "monospace",
     "python.linting.pylintEnabled": true,
     "python.linting.pylintArgs": [
         "--load-plugins=pylint_django"
     ],
+    "terminal.integrated.fontWeightBold": "normal",
 }
