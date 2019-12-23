@@ -39,6 +39,7 @@ class RecipeSerializer(serializers.ModelSerializer):
             'id', 'title', 'time_minutes',
             'price', 'link', 'ingredients', 'tags')
         read_only_fields = ('id',)
+
     @staticmethod
     def setup_eager_loading(queryset):
         """ Prefetch ingredients and tags data"""
