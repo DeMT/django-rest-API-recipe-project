@@ -1,3 +1,7 @@
+import tempfile
+import os
+
+from PIL import Image
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -10,11 +14,16 @@ from ..serializers import RecipeSerializer, RecipeDetailSerializer
 
 # /api/recipe/recipes
 RECIPES_URL = reverse('contents:recipe-list')
-# /api/recipe/recipes/{id}
+
+
+def image_upload_url(recipe_id):
+    """Return URL for recipe image upload"""
+    return reverse('contents:recipe-upload-image', args=[recipe_id])
 
 
 def detail_url(recipe_id):
     """Return recipe detail url"""
+    # /api/recipe/recipes/{id}
     return reverse('contents:recipe-detail', args=[recipe_id])
 
 
@@ -183,3 +192,37 @@ class PrivateRecipeApiTest(TestCase):
         recipe.refresh_from_db()
         self.assertEqual(recipe.title, payload['title'])
         self.assertNotIn(tag, recipe.tags.all())
+
+
+class RecipeImageUploadTests(TestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+        self.user = get_user_model().objects.create_user(
+            'testuser@test.com', 'testpass'
+        )
+        self.client.force_authenticate(self.user)
+        self.recipe = sample_recipe(user=self.user)
+
+    def tearDown(self):
+        self.recipe.image.delete()
+
+    def test_upload_image_to_recipe(self):
+        """Test uploading an image to recipe"""
+        url = image_upload_url(self.recipe.id)
+        with tempfile.NamedTemporaryFile(suffix='.jpg') as ntf:
+            img = Image.new('RGB', (10, 10))
+            img.save(ntf, 'JPEG')
+            ntf.seek(0)
+            res = self.client.post(url, {'image': ntf}, fomat='multipart')
+
+        self.recipe.refresh_from_db()
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertIn('image', res.data)
+        self.assertTrue(os.path.exists(self.recipe.image.path))
+
+    def test_upload_image_bad_request(self):
+        """Test uploading an invalid image"""
+        url = image_upload_url(self.recipe.id)
+        res = self.client.post(url, {'image': 'not image'}, fomat='mutipart')
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
